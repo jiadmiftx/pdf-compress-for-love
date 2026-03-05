@@ -11,9 +11,9 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
  * Quality presets mapping to scale factor and JPEG quality
  */
 const QUALITY_PRESETS = {
-    low: { scale: 0.6, quality: 0.4, label: 'Tinggi (file kecil)' },
-    medium: { scale: 0.8, quality: 0.6, label: 'Sedang' },
-    high: { scale: 1.0, quality: 0.75, label: 'Rendah (kualitas bagus)' },
+    low: { scale: 0.6, quality: 0.4, label: 'High (small file)' },
+    medium: { scale: 0.8, quality: 0.6, label: 'Medium' },
+    high: { scale: 1.0, quality: 0.75, label: 'Low (best quality)' },
 };
 
 /**
