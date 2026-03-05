@@ -19,6 +19,7 @@ import {
 import { compressPDF, getPDFThumbnail, getPDFPageCount, formatFileSize, QUALITY_PRESETS } from './pdfCompressor';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
+import { trackFilesUploaded, trackCompressionStart, trackFileCompressed, trackDownload, trackCompressionError } from './analytics';
 
 // Status constants
 const STATUS = {
@@ -66,6 +67,10 @@ export default function PdfCompressorApp() {
         }));
 
         setFiles(prev => [...prev, ...newFiles]);
+
+        // Track upload event
+        const totalSize = newFiles.reduce((sum, f) => sum + f.originalSize, 0);
+        trackFilesUploaded(newFiles.length, totalSize);
     }, []);
 
     // Drag & drop handlers
@@ -88,6 +93,7 @@ export default function PdfCompressorApp() {
     // Compress all files
     const compressAll = async () => {
         setIsCompressing(true);
+        trackCompressionStart(quality, files.filter(f => f.status !== STATUS.DONE).length);
 
         for (let i = 0; i < files.length; i++) {
             const fileItem = files[i];
@@ -114,11 +120,13 @@ export default function PdfCompressorApp() {
                         compressedBlob: result.blob,
                     } : f
                 ));
+                trackFileCompressed(fileItem.originalSize, result.compressedSize, fileItem.pageCount, quality);
             } catch (error) {
                 console.error('Compression error:', error);
                 setFiles(prev => prev.map(f =>
                     f.id === fileItem.id ? { ...f, status: STATUS.ERROR, error: error.message } : f
                 ));
+                trackCompressionError(error.message);
             }
         }
 
@@ -130,6 +138,7 @@ export default function PdfCompressorApp() {
         if (!fileItem.compressedBlob) return;
         const name = fileItem.name.replace('.pdf', '_compressed.pdf');
         saveAs(fileItem.compressedBlob, name);
+        trackDownload('single', fileItem.compressedBlob.size);
     };
 
     // Download all as ZIP
@@ -145,6 +154,7 @@ export default function PdfCompressorApp() {
 
         const content = await zip.generateAsync({ type: 'blob' });
         saveAs(content, 'compressed_pdfs.zip');
+        trackDownload('zip', content.size);
     };
 
     const completedCount = files.filter(f => f.status === STATUS.DONE).length;
