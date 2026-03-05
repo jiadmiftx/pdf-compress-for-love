@@ -166,7 +166,7 @@ export default function PdfCompressorApp() {
                     </div>
                     <div className="flex items-center gap-2 text-xs text-slate-500">
                         <Shield size={14} />
-                        <span>100% Client-Side · File tidak dikirim ke server</span>
+                        <span>100% Client-Side · Files never leave your browser</span>
                     </div>
                 </div>
             </nav>
@@ -177,10 +177,10 @@ export default function PdfCompressorApp() {
                 {files.length === 0 && (
                     <div className="text-center mb-10 animate-fade-in-up">
                         <h1 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">
-                            Kompres PDF <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-violet-400">Secara Instan</span>
+                            Compress PDF <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-violet-400">Instantly</span>
                         </h1>
                         <p className="text-slate-400 text-lg max-w-xl mx-auto">
-                            Kurangi ukuran file PDF langsung di browser. Gratis, cepat, dan 100% privasi terjaga.
+                            Reduce PDF file size directly in your browser. Free, fast, and 100% private.
                         </p>
                     </div>
                 )}
@@ -211,9 +211,9 @@ export default function PdfCompressorApp() {
                         </div>
                         <div>
                             <p className="text-lg font-bold text-white mb-1">
-                                {isDragging ? 'Lepas file di sini...' : 'Drag & drop file PDF atau klik untuk memilih'}
+                                {isDragging ? 'Drop files here...' : 'Drag & drop PDF files or click to browse'}
                             </p>
-                            <p className="text-sm text-slate-500">Mendukung multiple file sekaligus</p>
+                            <p className="text-sm text-slate-500">Supports multiple files at once</p>
                         </div>
                     </div>
                 </div>
@@ -225,9 +225,9 @@ export default function PdfCompressorApp() {
                         {/* CONTROLS BAR */}
                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
                             <div className="flex items-center gap-3">
-                                <span className="text-sm font-semibold text-slate-400">{files.length} file dipilih</span>
+                                <span className="text-sm font-semibold text-slate-400">{files.length} file(s) selected</span>
                                 <button onClick={clearAll} className="text-xs text-red-400 hover:text-red-300 font-medium flex items-center gap-1 transition-colors">
-                                    <X size={14} /> Hapus Semua
+                                    <X size={14} /> Clear All
                                 </button>
                             </div>
 
@@ -235,7 +235,7 @@ export default function PdfCompressorApp() {
                                 {/* QUALITY SELECTOR */}
                                 <div className="relative">
                                     <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 mb-1.5">
-                                        <Gauge size={13} /> Level Kompresi
+                                        <Gauge size={13} /> Compression Level
                                     </div>
                                     <div className="flex bg-slate-800/80 rounded-xl border border-slate-700/60 p-1">
                                         {Object.entries(QUALITY_PRESETS).map(([key, preset]) => (
@@ -266,9 +266,9 @@ export default function PdfCompressorApp() {
                                             }`}
                                     >
                                         {isCompressing ? (
-                                            <><Loader2 size={16} className="animate-spin" /> Memproses...</>
+                                            <><Loader2 size={16} className="animate-spin" /> Processing...</>
                                         ) : (
-                                            <><Zap size={16} /> Kompres Semua</>
+                                            <><Zap size={16} /> Compress All</>
                                         )}
                                     </button>
                                 </div>
@@ -303,14 +303,14 @@ export default function PdfCompressorApp() {
                                             <div className="flex items-center gap-3 mt-1 text-xs text-slate-500">
                                                 <span>{formatFileSize(f.originalSize)}</span>
                                                 <span>·</span>
-                                                <span>{f.pageCount} halaman</span>
+                                                <span>{f.pageCount} pages</span>
                                                 {f.status === STATUS.DONE && f.compressedSize && (
                                                     <>
                                                         <span>→</span>
                                                         <span className="text-emerald-400 font-bold">{formatFileSize(f.compressedSize)}</span>
                                                         <span className={`font-bold px-1.5 py-0.5 rounded text-[10px] ${f.compressedSize < f.originalSize
-                                                                ? 'bg-emerald-500/15 text-emerald-400'
-                                                                : 'bg-amber-500/15 text-amber-400'
+                                                            ? 'bg-emerald-500/15 text-emerald-400'
+                                                            : 'bg-amber-500/15 text-amber-400'
                                                             }`}>
                                                             {f.compressedSize < f.originalSize
                                                                 ? `-${Math.round((1 - f.compressedSize / f.originalSize) * 100)}%`
@@ -332,7 +332,7 @@ export default function PdfCompressorApp() {
                                             )}
                                             {f.status === STATUS.ERROR && (
                                                 <p className="mt-1 text-xs text-red-400 flex items-center gap-1">
-                                                    <AlertCircle size={12} /> Gagal: {f.error}
+                                                    <AlertCircle size={12} /> Failed: {f.error}
                                                 </p>
                                             )}
                                         </div>
@@ -375,10 +375,10 @@ export default function PdfCompressorApp() {
                                     </div>
                                     <div>
                                         <p className="text-sm font-bold text-emerald-300">
-                                            {completedCount} dari {files.length} file selesai dikompres
+                                            {completedCount} of {files.length} files compressed
                                         </p>
                                         <p className="text-xs text-emerald-500/80 mt-0.5">
-                                            Total hemat: <span className="font-bold text-emerald-400">{formatFileSize(Math.max(0, totalSavedBytes))}</span>
+                                            Total saved: <span className="font-bold text-emerald-400">{formatFileSize(Math.max(0, totalSavedBytes))}</span>
                                         </p>
                                     </div>
                                 </div>
@@ -387,7 +387,7 @@ export default function PdfCompressorApp() {
                                         onClick={downloadAllAsZip}
                                         className="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-sm transition-all shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 hover:scale-[1.02] active:scale-[0.98]"
                                     >
-                                        <Archive size={16} /> Download Semua (ZIP)
+                                        <Archive size={16} /> Download All (ZIP)
                                     </button>
                                 )}
                             </div>
@@ -399,9 +399,9 @@ export default function PdfCompressorApp() {
                 {files.length === 0 && (
                     <div className="grid md:grid-cols-3 gap-4 mt-12 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
                         {[
-                            { icon: Zap, title: 'Cepat & Instan', desc: 'Proses langsung di browser, tanpa antrian server', color: 'text-amber-400', bg: 'bg-amber-500/10' },
-                            { icon: Shield, title: '100% Privasi', desc: 'File tidak pernah dikirim ke server manapun', color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
-                            { icon: ArrowDownToLine, title: 'Batch Processing', desc: 'Kompres banyak PDF sekaligus dalam satu klik', color: 'text-indigo-400', bg: 'bg-indigo-500/10' },
+                            { icon: Zap, title: 'Fast & Instant', desc: 'Process directly in your browser, no server queue', color: 'text-amber-400', bg: 'bg-amber-500/10' },
+                            { icon: Shield, title: '100% Private', desc: 'Files are never sent to any server', color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+                            { icon: ArrowDownToLine, title: 'Batch Processing', desc: 'Compress multiple PDFs at once in a single click', color: 'text-indigo-400', bg: 'bg-indigo-500/10' },
                         ].map((feat, i) => (
                             <div key={i} className="bg-slate-900/60 border border-slate-800/60 rounded-xl p-6 hover:border-slate-700/60 transition-all group">
                                 <div className={`w-11 h-11 ${feat.bg} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
@@ -417,8 +417,15 @@ export default function PdfCompressorApp() {
 
             {/* FOOTER */}
             <footer className="border-t border-slate-800/60 mt-16">
-                <div className="max-w-6xl mx-auto px-4 py-6 text-center text-xs text-slate-600">
-                    PDF Compressor — Semua proses berjalan di browser Anda. Tidak ada file yang dikirim ke server.
+                <div className="max-w-6xl mx-auto px-4 py-6 flex flex-col items-center gap-2 text-xs text-slate-600">
+                    <p>© {new Date().getFullYear()} <a href="https://instagram.com/angginrisnaw" target="_blank" rel="noopener noreferrer" className="text-pink-400 hover:text-pink-300 font-semibold transition-colors">@angginrisnaw 💕</a> — All rights reserved.</p>
+                    <p>
+                        Built with ❤️ by{' '}
+                        <a href="https://github.com/jiadmiftx" target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors">@jiadmiftx</a>
+                        {' · '}
+                        <a href="https://instagram.com/jiadmiftx" target="_blank" rel="noopener noreferrer" className="text-pink-400 hover:text-pink-300 font-semibold transition-colors">Instagram</a>
+                    </p>
+                    <p className="text-slate-700 mt-1">All processing runs in your browser. No files are sent to any server.</p>
                 </div>
             </footer>
         </div>
